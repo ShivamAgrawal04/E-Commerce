@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@font-face {
+    font-family: 'Beatrice Display';
+    src: url('BeatriceDeckTRIAL-Bold-BF64829e8e9ca08.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    /* font-family: 'Beatrice Display'; */
+}
