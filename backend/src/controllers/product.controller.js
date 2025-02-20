@@ -1,14 +1,5 @@
 import Product from "../models/product.model.js";
 
-export const getAllProducts = async (req, res) => {
-  try {
-    const products = await Product.find({});
-    res.status(200).json(products);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
 export const getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -19,10 +10,30 @@ export const getProductById = async (req, res) => {
   }
 };
 
-export const createProduct = async (req, res) => {
-  const product = new Product(req.body);
+export const getAllProducts = async (req, res) => {
   try {
-    await product.save();
+    const products = await Product.find({});
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const addProduct = async (req, res) => {
+  const { name, description, price, category, images, stock } = req.body;
+
+  if (!name || !description || !price || !category || !images || !stock) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+  try {
+    const product = await Product.create({
+      name,
+      description,
+      price,
+      category,
+      images,
+      stock,
+    });
     res.status(201).json(product);
   } catch (error) {
     res.status(400).json({ message: error.message });

@@ -1,9 +1,10 @@
+import Blacklist from "../models/blacklist.model.js";
 import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 
 // User Registration
 export const registerUser = async (req, res) => {
-  const { name, email, password, role } = req.body;
+  const { name, email, password, ...h } = req.body;
   if (!name || !email || !password) {
     return res.status(400).json({ message: "All fields are required" });
   }
@@ -59,8 +60,44 @@ export const loginUser = async (req, res) => {
 };
 
 export const profileUser = async (req, res) => {
-  console.log("Profile");
-  return res.status(200).json({ message: "Profile" });
+  try {
+    const userProfile = await User.findById(req.user?._id).select(
+      "-_id -role -createdAt -updatedAt -__v"
+    );
+    if (!userProfile) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json({ message: "Profile", userProfile });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "server Error", error: error.message });
+  }
+};
+
+export const updateProfile = async (req, res) => {
+  try {
+    const { password, email, name } = req.body;
+    const user = await User.findById(req.user?._id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    if (email) user.email = email;
+    if (name) user.name = name;
+    if (password) user.password = password;
+
+    const updatedUser = await user.save();
+    const userResponse = updatedUser.toObject();
+    delete userResponse.password;
+    return res
+      .status(200)
+      .json({ message: "Profile updated successfully", userResponse });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ message: "server Error", error: error.message });
+  }
 };
 
 export const refreshAccessToken = async (req, res) => {
@@ -70,17 +107,20 @@ export const refreshAccessToken = async (req, res) => {
     if (!incomingRefreshToken) {
       return res.status(401).json({ message: "No refresh token provided" });
     }
+    // console.log("Incoming Refresh Token:", incomingRefreshToken);
+
     const decodedToken = jwt.verify(
       incomingRefreshToken,
       process.env.REFRESH_TOKEN_SECRET
     );
-    const user = await User.findById(decodedToken?.id);
-    if (!user) {
-      return res.status(403).json({ message: "Invalid refresh token" });
+    // console.log(decodedToken?._id);
+    const user = await User.findById(decodedToken?._id);
+    if (user?._id != decodedToken?._id) {
+      return res.status(403).json({ message: " Invalid refresh token" });
     }
     const newRefreshToken = user.generateRefreshToken();
     const newAccessToken = user.generateAccessToken();
-    res.cookies("refreshToken", newRefreshToken, {
+    res.cookie("refreshToken", newRefreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "Strict",
@@ -88,18 +128,18 @@ export const refreshAccessToken = async (req, res) => {
     });
     return res.status(200).json({ newAccessToken, newRefreshToken });
   } catch (error) {
-    return res.status(403).json({ message: "Invalid refresh token" });
+    return res.status(403).json({ message: "Something went wrong" });
   }
 };
 
 export const logoutUser = async (req, res) => {
   try {
+    const token = req.header("Authorization")?.split(" ")[1];
+    if (token) {
+      await Blacklist.create({ token });
+    }
+
     res.clearCookie("refreshToken", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
-    });
-    res.clearCookie("accessToken", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "Strict",

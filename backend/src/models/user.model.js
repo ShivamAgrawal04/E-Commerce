@@ -26,7 +26,28 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "admin"],
       default: "user",
     },
-    address: { type: String },
+    address: {
+      city: {
+        type: String,
+        required: true,
+        lowercase: true,
+      },
+      address: {
+        type: String,
+        required: true,
+        lowercase: true,
+      },
+      pincode: {
+        type: Number,
+        required: true,
+        validate: {
+          validator: function (v) {
+            return /^[0-9]{6}$/.test(v); // Ensures it's exactly 6 digits
+          },
+          message: (props) => `${props.value} is not a valid pincode!`,
+        },
+      },
+    },
     phone: {
       type: Number,
       unique: true,
@@ -50,6 +71,9 @@ userSchema.pre("save", async function (next) {
 });
 userSchema.methods.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.password);
+};
+userSchema.methods.hashPassword = async function (password) {
+  return await bcrypt.hash(password, 10);
 };
 
 userSchema.methods.generateAccessToken = function () {

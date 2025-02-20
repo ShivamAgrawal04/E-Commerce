@@ -1,22 +1,19 @@
-// Product Routes (/api/products)
-// GET / – Fetch all products
-// GET /:id – Fetch product by ID
-// POST / – Add a product (Admin only)
-// PUT /:id – Update product details (Admin only)
-// DELETE /:id – Remove a product (Admin only)
-
 import { Router } from "express";
 import {
+  addProduct,
+  deleteProduct,
   getAllProducts,
   getProductById,
+  updateProduct,
 } from "../controllers/product.controller.js";
+import { checkRole, verifyToken } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.get("/", getAllProducts);
-router.get("/:id", getProductById);
-// router.post("/", addProduct); //admin
-// router.put("/:id", updateProduct); //admin
-// router.delete("/:id", deleteProduct); //admin
+router.post("/add", verifyToken, checkRole(["admin"]), addProduct); // Add a new product
+router.get("/:id", getProductById); // Get product details
+router.get("/", getAllProducts); // Get all products
+router.put("/:id", verifyToken, checkRole(["admin"]), updateProduct); // Update a product
+router.delete("/:id", verifyToken, checkRole(["admin"]), deleteProduct); // Delete a product
 
 export default router;

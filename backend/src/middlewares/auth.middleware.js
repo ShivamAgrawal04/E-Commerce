@@ -1,7 +1,8 @@
 // middleware/authMiddleware.js
 import jwt from "jsonwebtoken";
+import Blacklist from "../models/blacklist.model.js";
 
-export const verifyToken = (req, res, next) => {
+export const verifyToken = async (req, res, next) => {
   try {
     const token =
       req.cookies?.accessToken || req.header("Authorization")?.split(" ")[1];
@@ -9,8 +10,12 @@ export const verifyToken = (req, res, next) => {
       return res.status(401).json({ message: "No token provided" });
     }
 
+    const blacklistToken = await Blacklist.findOne({ token });
+
+    if (token === blacklistToken?.token) {
+      return res.status(401).json({ message: "Token is expired" });
+    }
     const decode = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    console.log(decode);
     req.user = decode;
     next();
   } catch (error) {
