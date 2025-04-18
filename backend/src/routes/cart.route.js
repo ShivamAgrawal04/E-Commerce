@@ -13,7 +13,7 @@ import {
 
 const router = Router();
 
-router.get("/:userId", getCart);
+router.get("/", getCart);
 router.put("/update", updateCart);
 router.post("/add", addToCart);
 router.delete("/remove", removeFromCart);

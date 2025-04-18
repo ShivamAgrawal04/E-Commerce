@@ -4,8 +4,9 @@ import Blacklist from "../models/blacklist.model.js";
 
 export const verifyToken = async (req, res, next) => {
   try {
-    const token =
-      req.cookies?.accessToken || req.header("Authorization")?.split(" ")[1];
+    const token = req.cookies?.accessToken;
+    // || req.header("Authorization")?.split(" ")[1];
+
     if (!token) {
       return res.status(401).json({ message: "No token provided" });
     }
@@ -16,6 +17,13 @@ export const verifyToken = async (req, res, next) => {
       return res.status(401).json({ message: "Token is expired" });
     }
     const decode = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+    const expiryDate = new Date(decode.exp * 1000); // Convert seconds to milliseconds
+    const istTime = expiryDate.toLocaleString("en-IN", {
+      timeZone: "Asia/Kolkata",
+    });
+    console.log(`Token expires at: ${istTime}`);
+
     req.user = decode;
     next();
   } catch (error) {

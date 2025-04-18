@@ -26,38 +26,22 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "admin"],
       default: "user",
     },
-    address: {
-      city: {
-        type: String,
-        required: true,
-        lowercase: true,
+
+    addresses: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Address",
       },
-      address: {
-        type: String,
-        required: true,
-        lowercase: true,
+    ],
+    Orders: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Order",
       },
-      pincode: {
-        type: Number,
-        required: true,
-        validate: {
-          validator: function (v) {
-            return /^[0-9]{6}$/.test(v); // Ensures it's exactly 6 digits
-          },
-          message: (props) => `${props.value} is not a valid pincode!`,
-        },
-      },
-    },
-    phone: {
-      type: Number,
-      unique: true,
-      validate: {
-        validator: function (v) {
-          return /^[0-9]{10}$/.test(v); // Ensures it's exactly 10 digits
-        },
-        message: (props) => `${props.value} is not a valid phone number!`,
-      },
-    },
+    ],
+    isVerified: { type: Boolean, default: false },
+    resetToken: { type: String }, // For password reset
+    refreshToken: { type: String }, // For JWT refresh token
   },
   { timestamps: true }
 );
@@ -72,9 +56,9 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
-userSchema.methods.hashPassword = async function (password) {
-  return await bcrypt.hash(password, 10);
-};
+// userSchema.methods.hashPassword = async function (password) {
+//   return await bcrypt.hash(password, 10);
+// };
 
 userSchema.methods.generateAccessToken = function () {
   return jwt.sign(

@@ -1,0 +1,159 @@
+{
+    "products": [
+        {
+            "title": "Slim Fit Checked Shirt",
+            "description": "Stylish checked shirt with slim fit cut, perfect for casual outings.",
+            "price": 1399,
+            "discountPercentage": 12,
+            "stock": 35,
+            "category": "Shirt",
+            "thumbnail": "https://images.unsplash.com/photo-1602810316543-d9ec9f4d4b20",
+            "images": [
+                "https://images.unsplash.com/photo-1542060749-10c28b62716d",
+                "https://images.unsplash.com/photo-1622447126371-7aef2873e17f"
+            ]
+        },
+        {
+            "title": "Formal White Shirt",
+            "description": "Crisp white shirt with classic collar, ideal for office wear.",
+            "price": 1199,
+            "discountPercentage": 8,
+            "rating": 4.2,
+            "stock": 50,
+            "category": "Shirt",
+            "thumbnail": "https://images.unsplash.com/photo-1523381210434-271e8be1f52b",
+            "images": [
+                "https://images.unsplash.com/photo-1585386959984-a41552262d5f"
+            ]
+        },
+        {
+            "title": "Denim Casual Shirt",
+            "description": "Dark blue denim shirt with buttoned pockets and stylish fit.",
+            "price": 1599,
+            "discountPercentage": 10,
+            "rating": 4.5,
+            "stock": 42,
+            "category": "Shirt",
+            "thumbnail": "https://images.unsplash.com/photo-1602810316713-cce0c79c4b89",
+            "images": [
+                "https://images.unsplash.com/photo-1561808847-9f4a1d27c4a0"
+            ]
+        },
+        {
+            "title": "Classic Black Pants",
+            "description": "Tailored black pants made from breathable stretch fabric.",
+            "price": 1899,
+            "discountPercentage": 15,
+            "rating": 4.6,
+            "stock": 20,
+            "category": "Pant",
+            "thumbnail": "https://images.unsplash.com/photo-1622447222844-2d93389e0f53",
+            "images": [
+                "https://images.unsplash.com/photo-1582735684627-998762f76cbe"
+            ]
+        },
+        {
+            "title": "Beige Chino Pants",
+            "description": "Slim-fit chinos in beige, versatile for both casual and formal wear.",
+            "price": 1699,
+            "discountPercentage": 10,
+            "rating": 4.3,
+            "stock": 30,
+            "category": "Pant",
+            "thumbnail": "https://images.unsplash.com/photo-1618366745735-0c64cccd3a59",
+            "images": [
+                "https://images.unsplash.com/photo-1523381294911-8d3cead13475"
+            ]
+        },
+        {
+            "title": "Navy Blue Jogger Pants",
+            "description": "Comfortable jogger pants made with premium cotton blend.",
+            "price": 1499,
+            "discountPercentage": 5,
+            "rating": 4.1,
+            "stock": 60,
+            "category": "Pant",
+            "thumbnail": "https://images.unsplash.com/photo-1612444530698-2a03ffbdd7c9",
+            "images": [
+                "https://images.unsplash.com/photo-1631049037275-f37ff8d92407"
+            ]
+        },
+        {
+            "title": "Dark Grey Formal Trousers",
+            "description": "Sharp looking grey trousers perfect for corporate attire.",
+            "price": 1999,
+            "discountPercentage": 20,
+            "rating": 4.7,
+            "stock": 18,
+            "category": "Trouser",
+            "thumbnail": "https://images.unsplash.com/photo-1612423284934-ef29a37f6a76",
+            "images": [
+                "https://images.unsplash.com/photo-1575025259472-88b4cc4b1a9f"
+            ]
+        },
+        {
+            "title": "Slim Fit Khaki Trousers",
+            "description": "Modern khaki trousers with stretchable waistband for all-day comfort.",
+            "price": 1799,
+            "discountPercentage": 18,
+            "rating": 4.3,
+            "stock": 28,
+            "category": "Trouser",
+            "thumbnail": "https://images.unsplash.com/photo-1622447222844-2d93389e0f53",
+            "images": [
+                "https://images.unsplash.com/photo-1617055487329-90fdc03bafec"
+            ]
+        },
+        {
+            "title": "Classic Navy Trousers",
+            "description": "Elegant navy trousers designed for daily office wear.",
+            "price": 1599,
+            "discountPercentage": 10,
+            "rating": 4.0,
+            "stock": 40,
+            "category": "Trouser",
+            "thumbnail": "https://images.unsplash.com/photo-1603570059448-5c6d92d7eb7c",
+            "images": [
+                "https://images.unsplash.com/photo-1541099649105-f69ad21f3246"
+            ]
+        },
+        {
+            "title": "Graphic Cotton T-Shirt",
+            "description": "Bold graphic print tee made with 100% cotton, round neck.",
+            "price": 799,
+            "discountPercentage": 8,
+            "rating": 4.5,
+            "stock": 70,
+            "category": "T-shirt",
+            "thumbnail": "https://images.unsplash.com/photo-1541099649105-f69ad21f3246",
+            "images": [
+                "https://images.unsplash.com/photo-1598970434795-0c54fe7c0642"
+            ]
+        },
+        {
+            "title": "Plain Black T-Shirt",
+            "description": "Classic plain black tee for daily essentials, soft and breathable.",
+            "price": 599,
+            "discountPercentage": 5,
+            "rating": 4.3,
+            "stock": 65,
+            "category": "T-shirt",
+            "thumbnail": "https://images.unsplash.com/photo-1556909190-447c0d3c1191",
+            "images": [
+                "https://images.unsplash.com/photo-1542068829-1115f7259450"
+            ]
+        },
+        {
+            "title": "White Oversized T-Shirt",
+            "description": "Trendy oversized T-shirt in white, pairs well with joggers and jeans.",
+            "price": 699,
+            "discountPercentage": 7,
+            "stock": 55,
+            "category": "T-shirt",
+            "thumbnail": "https://images.unsplash.com/photo-1602810316543-d9ec9f4d4b20",
+            "images": [
+                "https://images.unsplash.com/photo-1618354691214-4979eeb60c2e"
+            ]
+        }
+    ]
+}

@@ -9,7 +9,12 @@ import cartRoutes from "./routes/cart.route.js";
 import productRoutes from "./routes/product.route.js";
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "http://localhost:5174"], // ✅ Replace with your frontend URL
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 connectDB();

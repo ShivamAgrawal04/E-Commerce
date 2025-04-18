@@ -4,7 +4,9 @@ import Product from "../models/product.model.js"; // Assuming you have a Product
 // Add product to the cart
 export const addToCart = async (req, res) => {
   try {
-    const { userId, productId, quantity } = req.body;
+    const { userId } = req.params;
+
+    const { productId } = req.body;
 
     // Check if the product exists
     const product = await Product.findById(productId);
