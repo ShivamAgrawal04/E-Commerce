@@ -1,4 +1,4 @@
-import client from "../config/Redis.js";
+import { client, isRedisConnected } from "../config/Redis.js";
 import Product from "../models/product.model.js";
 
 export const getProductById = async (req, res) => {
@@ -13,19 +13,20 @@ export const getProductById = async (req, res) => {
 
 export const getAllProducts = async (req, res) => {
   try {
-    const cachedProducts = await client.get("allProducts");
-    if (cachedProducts) {
-      const products = JSON.parse(cachedProducts);
-      return res.json(products);
-    } else {
-      const products = await Product.find({});
+    if (isRedisConnected) {
+      const cachedProducts = await client.get("allProducts");
+      if (cachedProducts) {
+        const products = JSON.parse(cachedProducts);
+        return res.json(products);
+      }
+    }
+    const products = await Product.find({}).lean();
+    if (isRedisConnected) {
       await client.set("allProducts", JSON.stringify(products), {
         EX: 300, // auto expire after 5 minutes
       });
-      res.status(200).json(products);
     }
-
-    // await client.del("allProducts");
+    res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

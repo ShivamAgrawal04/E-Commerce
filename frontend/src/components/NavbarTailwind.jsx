@@ -4,6 +4,7 @@ import {
   DisclosurePanel,
 } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { HeartIcon } from "lucide-react";
 import { useEffect } from "react";
 import { FaShoppingCart, FaUser, FaBars, FaSync } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,8 +34,8 @@ export default function NavbarTailwind({ children }) {
   const cartCount = useSelector((state) => state.cart.items.length);
 
   return (
-    <div className="min-h-full">
-      <Disclosure as="nav" className="">
+    <div className="min-h-full z-1 relative">
+      <Disclosure as="nav" className="sticky top-0 z-50 bg-white shadow-md">
         <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
           <div className="relative flex h-16 items-center justify-between">
             <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -57,7 +58,7 @@ export default function NavbarTailwind({ children }) {
                 <img
                   alt="Your Company"
                   src="company_logo.png"
-                  className=" w-10 scale-150 h-auto"
+                  className=" w-9 scale-150 h-auto"
                 />
               </div>
               <div className="hidden sm:ml-6 sm:block">
@@ -65,7 +66,7 @@ export default function NavbarTailwind({ children }) {
                   <div className="flex space-x-4">
                     <NavLink
                       to="/"
-                      className="relative group text-gray-500 cursor-pointer text-lg font-semibold"
+                      className="relative group text-gray-700 cursor-pointer text-lg font-medium"
                     >
                       {({ isActive }) => (
                         <>
@@ -82,7 +83,7 @@ export default function NavbarTailwind({ children }) {
                     </NavLink>
                     <NavLink
                       to="/adminDashboard"
-                      className="relative group text-gray-500 cursor-pointer text-lg font-semibold"
+                      className="relative group text-gray-700 cursor-pointer text-lg font-medium"
                     >
                       {({ isActive }) => (
                         <>
@@ -103,7 +104,7 @@ export default function NavbarTailwind({ children }) {
                   <div className="flex space-x-4">
                     <NavLink
                       to="/"
-                      className="relative group text-gray-500 cursor-pointer text-lg font-semibold"
+                      className="relative group text-gray-700 cursor-pointer text-lg font-medium"
                     >
                       {({ isActive }) => (
                         <>
@@ -120,7 +121,7 @@ export default function NavbarTailwind({ children }) {
                     </NavLink>
                     <NavLink
                       to="/collection"
-                      className="relative group text-gray-500 cursor-pointer text-lg font-semibold"
+                      className="relative group text-gray-700 cursor-pointer text-lg font-medium"
                     >
                       {({ isActive }) => (
                         <>
@@ -138,7 +139,7 @@ export default function NavbarTailwind({ children }) {
 
                     <NavLink
                       to="/products"
-                      className="relative group text-gray-500 cursor-pointer text-lg font-semibold"
+                      className="relative group text-gray-700 cursor-pointer text-lg font-medium"
                     >
                       {({ isActive }) => (
                         <>
@@ -157,20 +158,30 @@ export default function NavbarTailwind({ children }) {
                 )}
               </div>
             </div>
-            <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            <div className="absolute inset-y-0 right-0 flex items-center pr-4 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
               {user?.role === "admin" ? (
                 ""
               ) : (
                 <Link
                   to="/cart"
-                  className="relative rounded-full m-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
+                  className="relative rounded-full m-1 text-gray-400 hover:text-white hover:shadow-lg hover:transition hover:translate-y-1"
                 >
-                  <FaShoppingCart className=" text-gray-700 text-lg cursor-pointer hover:text-gray-900 size-6" />
-                  <span className="absolute -top-4 -right-4 bg-black text-white text-sm w-6 h-6 flex items-center justify-center rounded-full">
+                  <FaShoppingCart className="text-gray-700 cursor-pointer hover:text-gray-900 size-6" />
+                  <span className="absolute -top-2 -right-2 text-xs text-black bg-white rounded-full w-5 h-5 flex items-center justify-center">
                     {cartCount}
                   </span>
                 </Link>
               )}
+
+              <Link
+                to="/wishlist"
+                className="relative rounded-full ml-3 text-gray-400 hover:text-white  hover:shadow-lg hover:transition  hover:translate-y-1"
+              >
+                <HeartIcon className="text-gray-700 hover:shadow-lg hover:transition hover:translate-y-1 cursor-pointer hover:text-gray-900 size-6" />
+                <span className="absolute -top-2 -right-2 text-xs text-black bg-white rounded-full w-5 h-5 flex items-center justify-center">
+                  3 {/* Example number of items in wishlist */}
+                </span>
+              </Link>
 
               {/* Profile dropdown */}
               {isAuthenticated ? (
@@ -198,6 +209,9 @@ export default function NavbarTailwind({ children }) {
                       </Link>
                     </li>
                     <li>
+                      <Link to="/orderhistory">Orders</Link>
+                    </li>
+                    <li>
                       <Link>Settings</Link>
                     </li>
                     <li>
@@ -207,7 +221,7 @@ export default function NavbarTailwind({ children }) {
                 </div>
               ) : (
                 <Link to="/login" className="relative ml-3">
-                  <FaUser className="text-gray-700 text-lg cursor-pointer hover:text-gray-900 size-6" />
+                  <FaUser className="text-gray-700 cursor-pointer hover:shadow-lg hover:transition hover:translate-y-1 hover:text-gray-900 size-6" />
                 </Link>
               )}
             </div>
@@ -236,15 +250,8 @@ export default function NavbarTailwind({ children }) {
         </DisclosurePanel>
       </Disclosure>
 
-      {/* <header className="bg-white shadow-sm">
-        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-            Dashboard
-          </h1>
-        </div>
-      </header> */}
       <main>
-        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl py-6 z-0 relative">
           {/* Your content */}
           {children}
         </div>

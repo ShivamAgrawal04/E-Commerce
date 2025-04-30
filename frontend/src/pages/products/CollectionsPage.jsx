@@ -1,7 +1,11 @@
 import React from "react";
 
 const collections = [
-  { name: "New Arrivals", image: "https://example.com/new-arrivals.jpg" },
+  {
+    name: "New Arrivals",
+    image:
+      "https://5.imimg.com/data5/XQ/ML/TL/SELLER-69111335/high-quality-mens-long-sleeve-shirts1.jpg",
+  },
   { name: "Best Sellers", image: "https://example.com/best-sellers.jpg" },
   { name: "T-Shirts & Polos", image: "https://example.com/tshirts.jpg" },
   { name: "Shirts Collection", image: "https://example.com/shirts.jpg" },

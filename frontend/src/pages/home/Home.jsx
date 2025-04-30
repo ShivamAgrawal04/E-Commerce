@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import Hero from "./Hero";
 
 const products = [
   {
@@ -52,8 +53,11 @@ const Home = () => {
 
   return (
     <>
-      <div className="h-[calc(100vh-140px)] mx-auto flex flex-col md:flex-row items-center justify-between px-6 md:px-12">
-        {/* Hero Content */}
+      <div>
+        <Hero />
+      </div>
+      {/* <div className="h-[calc(100vh-140px)] mx-auto flex flex-col md:flex-row items-center justify-between px-6 md:px-12">
+        
         <div className="w-full md:w-1/2 text-center md:text-left space-y-20">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -93,7 +97,7 @@ const Home = () => {
           </motion.div>
         </div>
 
-        {/* Hero Images */}
+        
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -113,8 +117,8 @@ const Home = () => {
             onError={(e) => (e.target.src = "https://via.placeholder.com/250")}
           />
         </motion.div>
-      </div>
-      <div className="bg-white">
+      </div>*/}
+      <div className="bg-white px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-7xl">
           <h3 className="relative inline-block text-3xl tracking-tight sm:text-4xl font-bold">
             New <br /> This Week{" "}
@@ -156,7 +160,8 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="min-h-screen w-full flex flex-col justify-center text-center pt-10 pb-20">
+
+      <div className="min-h-screen px-4 sm:px-6 lg:px-8 w-full flex flex-col justify-center text-center pt-10 pb-20">
         <div>
           <h4 className="text-3xl md:text-4xl font-bold text-black mb-4">
             OUR APPROACH TO FASHION DESIGN

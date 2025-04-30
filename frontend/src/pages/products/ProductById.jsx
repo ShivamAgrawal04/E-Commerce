@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchProductById } from "../store/slice/productSlice";
+import { fetchProductById } from "../../store/slice/productSlice";
 
 const ProductById = () => {
   const { id } = useParams();
+  console.log(id);
   const dispatch = useDispatch();
   const { selectedProduct, loading } = useSelector((state) => state.product);
 
@@ -114,9 +115,14 @@ const ProductById = () => {
             <p className="mb-4 text-gray-400">
               FIND YOUR SIZE | MEASUREMENT GUIDE
             </p>
-            <button className="bg-gray-300 rounded-md w-full py-2">
-              ADD TO CART
-            </button>
+            <div className="flex gap-2">
+              <button className="bg-gray-300 rounded-md w-full py-2">
+                ADD TO CART
+              </button>
+              <button className=" rounded-md bg-blue-400 w-full py-2">
+                BUY NOW
+              </button>
+            </div>
           </div>
         </div>
       </div>

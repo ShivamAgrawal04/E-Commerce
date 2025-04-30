@@ -6,18 +6,27 @@ const productSchema = new mongoose.Schema(
     description: { type: String },
     price: { type: Number, required: true },
     discountPercentage: { type: Number },
-    stock: { type: Number, required: true },
-    category: { type: String, enum: ["T-shirt", "Pant", "Shirt", "Trouser"] },
+    discountPrice: { type: Number },
+    stockQuantity: { type: Number, required: true },
+    category: { type: String, required: true, lowercase: true },
     images: { type: [String] }, // Array of image URLs
     thumbnail: { type: String, required: true },
-    stock: { type: Number, required: true },
-    // rating: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "User",
-    //   default: 0,
-    //   min: 1,
-    //   max: 5,
-    // },
+    availableSizes: [
+      {
+        size: { type: String, enum: ["S", "M", "L", "XL", "XXL"] },
+        quantity: { type: Number, default: 0 },
+      },
+    ],
+    color: { type: String, lowercase: true },
+    material: { type: String, lowercase: true },
+    brand: { type: String, lowercase: true },
+
+    rating: {
+      type: Number,
+      default: 0,
+      min: 1,
+      max: 5,
+    },
     // reviews: [
     //   {
     //     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },

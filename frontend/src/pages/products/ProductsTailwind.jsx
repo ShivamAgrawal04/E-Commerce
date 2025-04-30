@@ -24,8 +24,10 @@ import {
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts } from "../store/slice/productSlice";
-import { addToCart } from "../store/slice/cartSlice";
+import { fetchProducts } from "../../store/slice/productSlice";
+import { addToCart, clearNotification } from "../../store/slice/cartSlice";
+import LoadingScreen from "../../components/LoadingScreen";
+import { toast } from "react-hot-toast";
 
 const sortOptions = [
   { name: "Most Popular", current: true },
@@ -87,15 +89,29 @@ function classNames(...classes) {
 
 const ProductsTailwind = () => {
   const [products, setProducts] = useState([]);
-  const [cartItems, setCartItems] = useState([]);
 
   const dispatch = useDispatch();
 
-  const handleAddToCart = (e, productID) => {
+  const { notification } = useSelector((state) => state.cart);
+
+  useEffect(() => {
+    if (notification) {
+      if (notification.type === "info") {
+        toast.error(notification.message);
+      } else if (notification.type === "success") {
+        toast.success(notification.message);
+      }
+
+      // Clear the notification after showing it
+      dispatch(clearNotification());
+    }
+  }, [notification, dispatch]);
+
+  const handleAddToCart = (e, product) => {
     e.preventDefault();
     e.stopPropagation(); // stops the event bubbling
 
-    dispatch(addToCart(productID));
+    dispatch(addToCart(product));
   };
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -138,11 +154,45 @@ const ProductsTailwind = () => {
   };
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
+  const getPageNumbers = () => {
+    const pages = [];
+
+    if (totalPages <= 6) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        pages.push(1, 2, 3, 4, "...", totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(
+          1,
+          "...",
+          totalPages - 3,
+          totalPages - 2,
+          totalPages - 1,
+          totalPages
+        );
+      } else {
+        pages.push(
+          1,
+          "...",
+          currentPage - 1,
+          currentPage,
+          currentPage + 1,
+          "...",
+          totalPages
+        );
+      }
+    }
+    return pages;
+  };
+
   if (loading) {
-    return <h1>loading...</h1>;
+    return <LoadingScreen />;
   }
   return (
-    <div className="bg-white">
+    <div className="bg-white px-4 sm:px-6 lg:px-8">
       <div>
         {/* Mobile filter dialog */}
         <Dialog
@@ -393,17 +443,17 @@ const ProductsTailwind = () => {
                 {/* {Your content here} */}
                 <div className="bg-white">
                   <div className="mx-auto max-w-2xl lg:max-w-7xl p-0">
-                    <div className=" grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
+                    <div className=" grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8 ">
                       {currentProducts.map((product) => (
                         <Link
-                          to={`/ProductById/${product.id}`}
+                          to={`/ProductById/${product._id}`}
                           key={product.id}
-                          className="space-y-6 overflow-hidden rounded-lg border border-gray-200 bg-white p-3 shadow-sm"
+                          className="space-y-6 overflow-hidden rounded-lg border border-gray-200 bg-white p-3 shadow-sm group"
                         >
                           <img
                             alt={product.imageAlt}
                             src={product.thumbnail}
-                            className="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80"
+                            className="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 transition-opacity lg:aspect-auto lg:h-80"
                           />
                           <div>
                             <span className="text-lg font-semibold leading-tight text-gray-900 hover:underline">
@@ -536,51 +586,60 @@ const ProductsTailwind = () => {
                     </div>
                     <div>
                       <nav
+                        className="mt-8 flex justify-center"
                         aria-label="Pagination"
-                        className="isolate inline-flex -space-x-px rounded-md shadow-xs"
                       >
-                        <Link
-                          onClick={() => paginate(currentPage - 1)}
-                          disabled={currentPage === 1}
-                          className={`relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 ${
-                            currentPage === 1 && "cursor-not-allowed opacity-50"
-                          }`}
-                        >
-                          <span className="sr-only">Previous</span>
-                          <ChevronLeftIcon
-                            aria-hidden="true"
-                            className="size-5"
-                          />
-                        </Link>
-                        {/* Current: "z-10 bg-indigo-600 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
-                        {Array.from({ length: totalPages }).map((_, index) => (
-                          <Link
-                            key={index + 1}
-                            onClick={() => paginate(index + 1)}
-                            className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
-                              currentPage === index + 1
-                                ? "bg-indigo-600 text-white"
-                                : "text-gray-900 ring-1 ring-gray-300 hover:bg-gray-50"
+                        <div className="inline-flex rounded-md shadow-sm isolate space-x-1">
+                          {/* Prev */}
+                          <button
+                            onClick={() => paginate(currentPage - 1)}
+                            disabled={currentPage === 1}
+                            className={`inline-flex items-center px-3 py-2 text-sm font-medium border rounded-l-md ${
+                              currentPage === 1
+                                ? "text-gray-400 bg-white border-gray-300 cursor-not-allowed"
+                                : "text-gray-700 bg-white border-gray-300 hover:bg-gray-100"
                             }`}
                           >
-                            {index + 1}
-                          </Link>
-                        ))}
+                            <ChevronLeftIcon className="w-5 h-5" />
+                          </button>
 
-                        <Link
-                          onClick={() => paginate(currentPage + 1)}
-                          disabled={currentPage === totalPages}
-                          className={`relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 ${
-                            currentPage === totalPages &&
-                            "cursor-not-allowed opacity-50"
-                          }`}
-                        >
-                          <span className="sr-only">Next</span>
-                          <ChevronRightIcon
-                            aria-hidden="true"
-                            className="size-5"
-                          />
-                        </Link>
+                          {/* Page Numbers */}
+                          {getPageNumbers().map((number, index) =>
+                            number === "..." ? (
+                              <span
+                                key={index}
+                                className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-500"
+                              >
+                                ...
+                              </span>
+                            ) : (
+                              <button
+                                key={index}
+                                onClick={() => paginate(number)}
+                                className={`inline-flex items-center px-4 py-2 text-sm font-semibold border ${
+                                  currentPage === number
+                                    ? "bg-indigo-600 text-white"
+                                    : "text-gray-700 bg-white hover:bg-gray-100"
+                                }`}
+                              >
+                                {number}
+                              </button>
+                            )
+                          )}
+
+                          {/* Next */}
+                          <button
+                            onClick={() => paginate(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                            className={`inline-flex items-center px-3 py-2 text-sm font-medium border rounded-r-md ${
+                              currentPage === totalPages
+                                ? "text-gray-400 bg-white border-gray-300 cursor-not-allowed"
+                                : "text-gray-700 bg-white border-gray-300 hover:bg-gray-100"
+                            }`}
+                          >
+                            <ChevronRightIcon className="w-5 h-5" />
+                          </button>
+                        </div>
                       </nav>
                     </div>
                   </div>

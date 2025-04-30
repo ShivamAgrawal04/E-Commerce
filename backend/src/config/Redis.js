@@ -9,14 +9,23 @@ const client = createClient({
   },
 });
 
-client.on("error", (err) => console.log("Redis Client Error", err));
+client.on("error", (err) => {
+  console.log("Redis Client Error", err);
+  isRedisConnected = false;
+});
+
+let isRedisConnected = false;
 
 client
   .connect()
-  .then(() => console.log("Redis connected"))
+  .then(() => {
+    console.log("Redis connected");
+    isRedisConnected = true;
+    return isRedisConnected;
+  })
   .catch(console.error);
 
-export default client;
+export { client, isRedisConnected };
 
 // await client.set("foo", "bar");
 // const result = await client.get("foo");

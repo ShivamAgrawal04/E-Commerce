@@ -9,12 +9,9 @@ const AddItems = () => {
     setImages(files.map((file) => URL.createObjectURL(file)));
   };
   return (
-    <>
-      {/* Main Content */}
-      <div className="flex-1 p-10 pl-15">
+    <div className="bg-white dark:bg-gray-900 p-6 rounded shadow-lg">
+      <div className="p-10 pl-15">
         <h2 className="text-xl font-bold mb-4">Upload Product</h2>
-
-        {/* Upload Images */}
         <div className="flex flex-wrap gap-2  mb-4">
           {images.map((src, index) => (
             <img
@@ -90,7 +87,7 @@ const AddItems = () => {
           ADD
         </button>
       </div>
-    </>
+    </div>
   );
 };
 
