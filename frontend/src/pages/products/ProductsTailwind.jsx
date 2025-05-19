@@ -10,7 +10,6 @@ import {
   MenuButton,
   MenuItem,
   MenuItems,
-  Transition,
 } from "@headlessui/react";
 import { Link } from "react-router-dom";
 import { XMarkIcon } from "@heroicons/react/24/outline";
@@ -30,8 +29,8 @@ import LoadingScreen from "../../components/LoadingScreen";
 import { toast } from "react-hot-toast";
 
 const sortOptions = [
-  { name: "Most Popular", current: true },
-  { name: "Best Rating", current: false },
+  // { name: "Most Popular", current: true },
+  // { name: "Best Rating", current: false },
   { name: "Newest", current: false },
   { name: "Price: Low to High", current: false },
   { name: "Price: High to Low", current: false },
@@ -72,15 +71,15 @@ const filters = [
       { value: "40l", label: "40L", checked: true },
     ],
   },
-  {
-    id: "price",
-    name: "Price Range",
-    options: [
-      { value: "0", label: "1000", checked: false },
-      { value: "1000", label: "5000", checked: false },
-      { value: "5000", label: "10000", checked: false },
-    ],
-  },
+  // {
+  //   id: "price",
+  //   name: "Price Range",
+  //   options: [
+  //     { value: "0", label: "1000", checked: false },
+  //     { value: "1000", label: "5000", checked: false },
+  //     { value: "5000", label: "10000", checked: false },
+  //   ],
+  // },
 ];
 
 function classNames(...classes) {

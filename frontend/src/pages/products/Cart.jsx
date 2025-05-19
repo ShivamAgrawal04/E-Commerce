@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import { FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { updateCartCount, removeFromCart } from "../../store/slice/cartSlice";
+import axios from "axios";
 
 const Cart = () => {
   const dispatch = useDispatch();
   const { items: cartItems } = useSelector((state) => state.cart);
+  const { user } = useSelector((state) => state.auth);
 
   const handleQuantityChange = (index, newQuantity) => {
     if (newQuantity >= 1) {

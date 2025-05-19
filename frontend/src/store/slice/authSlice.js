@@ -72,13 +72,13 @@ export const refreshAccessToken = createAsyncThunk(
 
 export const checkAuth = createAsyncThunk(
   "auth/me",
-  async ({ rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get("/auth/me", {
         withCredentials: true,
       });
-      console.log(response);
-      return true;
+      console.log("auth", response);
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -150,6 +150,22 @@ const authSlice = createSlice({
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(checkAuth.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(checkAuth.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload; // user object
+        state.isAuthenticated = true;
+        state.error = null;
+      })
+      .addCase(checkAuth.rejected, (state, action) => {
+        state.loading = false;
+        state.user = null;
+        state.isAuthenticated = false;
         state.error = action.payload;
       });
   },

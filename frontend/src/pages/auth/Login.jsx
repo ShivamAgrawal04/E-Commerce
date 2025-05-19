@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Lock, Mail, MessageSquare } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, Loader2 } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../store/slice/authSlice";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -15,9 +17,20 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = await dispatch(loginUser(formData));
-    if (result.meta.requestStatus === "fulfilled") {
-      navigate("/"); // Redirect after login
+    setError("");
+    setIsLoading(true);
+
+    try {
+      const result = await dispatch(loginUser(formData));
+      if (result.meta.requestStatus === "fulfilled") {
+        navigate("/");
+      } else {
+        setError("Invalid email or password");
+      }
+    } catch (err) {
+      setError("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -29,20 +42,26 @@ const Login = () => {
           {/* Logo */}
           <div className="text-center mb-8">
             <div className="flex flex-col items-center gap-2 group">
-              <div
-                className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20
-              transition-colors"
-              >
-                <MessageSquare className="w-6 h-6 text-primary" />
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                <img
+                  src="/logo.png"
+                  alt="SharpFit Logo"
+                  className="w-10 h-10"
+                />
               </div>
-              <h1 className="text-2xl font-bold mt-2">Welcome Back</h1>
+              <h1 className="text-2xl font-bold mt-2">Welcome to SharpFit</h1>
               <p className="text-base-content/60">Sign in to your account</p>
             </div>
           </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* {error && <p style={{ color: "red" }}>{error}</p>} */}
+            {error && (
+              <div className="alert alert-error">
+                <span>{error}</span>
+              </div>
+            )}
+
             <div className="form-control">
               <label className="label">
                 <span className="label-text font-medium">Email</span>
@@ -54,7 +73,7 @@ const Login = () => {
                 <input
                   type="email"
                   autoComplete="email"
-                  className={`input input-bordered w-full pl-10 z-9`}
+                  className="input input-bordered w-full pl-10"
                   placeholder="you@example.com"
                   value={formData.email}
                   onChange={(e) =>
@@ -74,7 +93,7 @@ const Login = () => {
                 </div>
                 <input
                   type={showPassword ? "text" : "password"}
-                  className={`input input-bordered w-full pl-10 z-9`}
+                  className="input input-bordered w-full pl-10"
                   placeholder="••••••••"
                   autoComplete="current-password"
                   value={formData.password}
@@ -99,23 +118,22 @@ const Login = () => {
             <button
               type="submit"
               className="btn btn-primary w-full"
-              // disabled={isLoggingIn}
+              disabled={isLoading}
             >
-              {/* {isLoggingIn ? (
+              {isLoading ? (
                 <>
                   <Loader2 className="h-5 w-5 animate-spin" />
                   Loading...
                 </>
               ) : (
                 "Sign in"
-              )} */}
-              Sign in
+              )}
             </button>
           </form>
 
           <div className="text-center">
             <p className="text-base-content/60">
-              Don&apos;t have an account?{" "}
+              Don't have an account?{" "}
               <Link to="/signup" className="link link-primary">
                 Create account
               </Link>
@@ -124,27 +142,23 @@ const Login = () => {
         </div>
       </div>
 
-      {/* Right Side - Image/Pattern */}
+      {/* Right Side - Fashion Image */}
       <div className="hidden lg:flex items-center justify-center bg-base-200 p-12 pt-0">
         <div className="max-w-md text-center">
-          <div className="grid grid-cols-3 gap-3 mb-8">
-            {[...Array(9)].map((_, i) => (
-              <div
-                key={i}
-                className={`aspect-square rounded-2xl bg-primary/10 ${
-                  i % 2 === 0 ? "animate-pulse" : ""
-                }`}
-              />
-            ))}
-          </div>
-          <h2 className="text-2xl font-bold mb-4">Welcome back!</h2>
+          <img
+            src="/images/fashion-login.jpg"
+            alt="Fashion Collection"
+            className="rounded-lg shadow-lg mb-8"
+          />
+          <h2 className="text-2xl font-bold mb-4">Elevate Your Style</h2>
           <p className="text-base-content/60">
-            Sign in to continue your conversations and catch up with your
-            messages.
+            Sign in to access exclusive collections, track your orders, and
+            enjoy personalized shopping experience.
           </p>
         </div>
       </div>
     </div>
   );
 };
+
 export default Login;

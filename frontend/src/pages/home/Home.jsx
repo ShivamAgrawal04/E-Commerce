@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
-import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
 import Hero from "./Hero";
 
 const products = [
@@ -16,7 +13,7 @@ const products = [
     color: "Black",
   },
   {
-    id: 1,
+    id: 2,
     name: "Basic Tee",
     href: "#",
     imageSrc:
@@ -26,7 +23,7 @@ const products = [
     color: "Black",
   },
   {
-    id: 1,
+    id: 3,
     name: "Basic Tee",
     href: "#",
     imageSrc:
@@ -36,7 +33,7 @@ const products = [
     color: "Black",
   },
   {
-    id: 1,
+    id: 4,
     name: "Basic Tee",
     href: "#",
     imageSrc:

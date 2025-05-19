@@ -16,57 +16,35 @@ import WishlistPage from "./pages/products/WishlistPage";
 import CheckoutPage from "./pages/products/CheckoutPage";
 import OrderHistoryPage from "./pages/admin/OrderHistoryPage";
 import Profile from "./pages/auth/Profile";
-import ProductById from "./pages/products/ProductById";
-import CollectionsPage from "./pages/products/CollectionsPage";
 import Footer from "./components/Footer";
 import PageNotFound from "./components/PageNotFound";
-// import { loginUser } from "./store/slice/authSlice";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CollectionPage from "./pages/collection/CollectionPage";
 import ProductById1 from "./pages/products/ProductById1";
-// import BurgerQRCode from "./components/QRCodeStyling";
-// import BurgerDotsQRCode from "./components/QRCodeStyling";
+import { checkAuth } from "./store/slice/authSlice";
 
 const App = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const res = await api.get("/auth/me");
-        dispatch(loginUser(res.data));
-        console.log("User authenticated:", res.data);
-      } catch (error) {
-        console.error("Error checking authentication:", error);
-      }
-    };
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(checkAuth());
+  // }, [dispatch]);
 
   return (
     <div data-theme="light" className="bg-[#F9FAFB]">
       <div className="mx-auto max-w-7xl">
         <NavbarTailwind>
           <Routes>
-            <Route path="/adminDashboard" element={<MainLayout />}>
-              <Route index element={<Dashboard />} />
-              <Route path="products" element={<Products />} />
-              <Route path="addProduct" element={<AddItems />} />
-
-              <Route path="orders" element={<Orders />} />
+            <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+              <Route path="/adminMenu" element={<MainLayout />}>
+                <Route index element={<Dashboard />} />
+                <Route path="products" element={<Products />} />
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="addProduct" element={<AddItems />} />
+                <Route path="orders" element={<Orders />} />
+              </Route>
             </Route>
 
-            {/* <Route
-              path="/fancy"
-              element={
-                <BurgerDotsQRCode
-                  value="https://example.com"
-                  imageUrl={
-                    "https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE="
-                  }
-                />
-              }
-            /> */}
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />

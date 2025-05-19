@@ -12,25 +12,29 @@ const collections = [
   {
     name: "Pants",
     description: "Comfortable and trendy pants.",
-    image: "/images/collections/pants.jpg",
+    image:
+      "https://images.unsplash.com/photo-1565084888279-aca607ecce0c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGFudHxlbnwwfHwwfHx8MA%3D%3D",
     link: "/collections/pants",
   },
   {
     name: "Jackets",
     description: "Layer up with our premium jackets.",
-    image: "/images/collections/jackets.jpg",
+    image:
+      "https://thumbs.dreamstime.com/b/male-black-crown-clothes-hanger-store-new-collection-different-color-spring-leather-jackets-men-close-up-197115953.jpg?w=1400",
     link: "/collections/jackets",
   },
   {
     name: "T-Shirts",
     description: "Casual and cool T-Shirts.",
-    image: "/images/collections/tshirts.jpg",
+    image:
+      "https://img.freepik.com/premium-photo/colorful-tshirts-collection-lined-up-concept-material-mockup-banner-concept-background-wallpaper-ai-generated-image_1087980-3087.jpg",
     link: "/collections/tshirts",
   },
   {
-    name: "Accessories",
-    description: "Belts, wallets, sunglasses & more.",
-    image: "/images/collections/accessories.jpg",
+    name: "Sherwanis",
+    description: "Traditional elegance for weddings and celebrations.",
+    image:
+      "https://i.ytimg.com/vi/E4o8fbd61x8/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLAuQFZJNGFaaPA3xkwUXb6Ck7HMWw",
     link: "/collections/accessories",
   },
 ];

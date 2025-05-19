@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Outlet } from "react-router-dom";
+import { fetchProducts } from "../../store/slice/productSlice";
 
 const dummyProducts = [
   {
@@ -47,7 +49,19 @@ const dummyProducts = [
 ];
 
 const Products = () => {
-  const [products, setProducts] = useState(dummyProducts);
+  // const [products, setProducts] = useState(dummyProducts);
+  const [products, setProducts] = useState([]);
+  const { items, loading } = useSelector((state) => state.product);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  useEffect(() => {
+    setProducts(items);
+  }, [items]);
+
   const [search, setSearch] = useState("");
 
   const handleDelete = (id) => {
@@ -71,7 +85,7 @@ const Products = () => {
   };
 
   const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(search.toLowerCase())
+    product?.title?.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -79,7 +93,7 @@ const Products = () => {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold">Products Management</h2>
         <Link
-          to="/adminDashboard/addProduct"
+          to="/adminMenu/addProduct"
           // onClick={handleAddProduct}
           className="flex items-center gap-2 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
         >
@@ -104,9 +118,9 @@ const Products = () => {
             <tr className="bg-gray-100 dark:bg-gray-800">
               <th className="p-2">Name</th>
               <th className="p-2">Stock</th>
-              <th className="p-2">Sale</th>
+              {/* <th className="p-2">Sale</th> */}
               <th className="p-2">Price</th>
-              <th className="p-2">Status</th>
+              {/* <th className="p-2">Status</th> */}
               <th className="p-2">Action</th>
             </tr>
           </thead>
@@ -114,11 +128,11 @@ const Products = () => {
             {filteredProducts.length > 0 ? (
               filteredProducts.map((product) => (
                 <tr key={product.id} className="border-t dark:border-gray-700">
-                  <td className="p-2">{product.name}</td>
+                  <td className="p-2">{product.title}</td>
                   <td className="p-2">{product.stock}</td>
-                  <td className="p-2">{product.sale}</td>
+                  {/* <td className="p-2">{product.sale}</td> */}
                   <td className="p-2">${product.price}</td>
-                  <td className="p-2">
+                  {/* <td className="p-2">
                     <span
                       className={`px-2 py-1 text-xs rounded-full ${
                         product.status === "Active"
@@ -128,7 +142,7 @@ const Products = () => {
                     >
                       {product.status}
                     </span>
-                  </td>
+                  </td> */}
                   <td className="p-2 flex gap-2">
                     <button
                       onClick={() => handleEdit(product.id)}

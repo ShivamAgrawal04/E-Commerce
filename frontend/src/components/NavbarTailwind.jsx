@@ -82,7 +82,7 @@ export default function NavbarTailwind({ children }) {
                       )}
                     </NavLink>
                     <NavLink
-                      to="/adminDashboard"
+                      to="/adminMenu"
                       className="relative group text-gray-700 cursor-pointer text-lg font-medium"
                     >
                       {({ isActive }) => (

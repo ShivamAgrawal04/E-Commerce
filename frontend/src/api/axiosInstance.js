@@ -15,22 +15,23 @@ api.interceptors.response.use(
   async (err) => {
     const originalRequest = err.config;
 
-    // Token expired → try refresh once
+    // Handle network errors
+    if (!err.response) {
+      return Promise.reject({
+        message: "Network error. Please check your connection.",
+      });
+    }
+
+    // Handle token refresh
     if (err.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-
       try {
-        await api.post("/auth/refresh-token"); // refresh token API
+        const response = await api.post("/auth/refresh-token");
         return api(originalRequest);
       } catch (refreshErr) {
         store.dispatch(logoutUser());
         return Promise.reject(refreshErr);
       }
-    }
-
-    // If still fails (e.g. cookies deleted), logout
-    if (err.response?.status === 403 || err.response?.status === 401) {
-      store.dispatch(logoutUser());
     }
 
     return Promise.reject(err);
